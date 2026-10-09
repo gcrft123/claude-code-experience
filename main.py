@@ -1,4 +1,4 @@
-import functools, math, os, random, re, sys, threading, time, turtle
+import builtins, functools, math, os, random, re, sys, textwrap, threading, time, turtle
 import tkinter.font as tkfont
 from datetime import datetime, timedelta
 
@@ -1035,6 +1035,13 @@ Fable 5.2 Ultracode                                  >> Auto
 /-----------------------------------------------------------
 Press RETURN"""
 HINT = "\n[HINT: Type 1, 2, or 3, then press RETURN]"
+WIDTH = 99   # the widest box the story draws (the "stance on equality" banner); all text wraps to it
+
+
+def print(*parts, **kw):   # wrap at word breaks; bullets, options and progress bars get a hanging indent; the ■ flood stays one line
+    fit = lambda ln: ln if len(ln) <= WIDTH or " " not in ln.strip() else textwrap.fill(ln, WIDTH, break_on_hyphens=False,
+                                                              subsequent_indent=" " * re.match(r" *(• |\[\d\] |\[[^\]]{8,12}\] )?", ln).end())
+    builtins.print(*("\n".join(map(fit, str(p).split("\n"))) for p in parts), **kw)
 
 
 def gen():
